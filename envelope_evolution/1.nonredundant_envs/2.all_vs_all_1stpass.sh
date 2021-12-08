@@ -1,1 +1,1 @@
-blastp -query blastdb/all_envs.fasta -db blastdb/all_envs.fasta -evalue 1e-50 -num_threads 3 -outfmt "10 qaccver saccver pident length mismatch qstart qend sstart send evalue"  | gzip >all_vs_all.results.gz
+blastp -query 1.blastdb/all_envs.fasta -db 1.blastdb/all_envs.fasta -evalue 1e-50 -num_threads 3 -outfmt "10 qaccver saccver pident length mismatch qstart qend sstart send evalue"  | gzip >all_vs_all.results.gz

@@ -13,9 +13,8 @@ blobs = {}
 
 for line in oh:
     idx += 1
-    if idx % 1e7 == 0:
+    if idx % 1e6 == 0:
         print('Processed {:,}'.format(idx))
-        break
 
     l = line.strip().split(',')
     length = float(l[2])
@@ -44,7 +43,7 @@ for k in blobs:
 print('Number of blobs: {:,}'.format(len(blobs)))
 
 # get all the fastas:
-fasta = convertFASTAtoDict('blastdb/all_envs.fasta')
+fasta = convertFASTAtoDict('1.blastdb/all_envs.fasta')
 fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 #print(fasta)
 
