@@ -10,11 +10,13 @@ oh = gzip.open('all_vs_all.results.gz', "rt")
 idx = 0
 
 blobs = {}
+per_search_blob = {}
 
 for line in oh:
     idx += 1
     if idx % 1e6 == 0:
         print('Processed {:,}'.format(idx))
+        #break
 
     l = line.strip().split(',')
     length = float(l[2])
@@ -25,6 +27,8 @@ for line in oh:
     id1 = l[0]
     id2 = l[1]
 
+    '''
+    # Comprehensive, but too slow past >48,000,000 matches;
     # see if it's already in a blob, and then add it to that set
     for blob in blobs:
         if id1 in blobs[blob]:
@@ -36,6 +40,22 @@ for line in oh:
     else:
         # Not in any blob, add a new one:
         blobs[idx] = set([id1, id2]) # key is not important and has no meaning
+    '''
+    
+    if id1 in per_search_blob:
+        blobs[per_search_blob[id1]].add(id2)
+        per_search_blob[id2] = per_search_blob[id1]
+    elif id2 in per_search_blob:   
+        blobs[per_search_blob[id2]].add(id1)
+        per_search_blob[id1] = per_search_blob[id2]
+    else:
+        # Not in any blob, add a new one:
+        blobs[idx] = set([id1, id2]) # key is not important and has no meaning
+        per_search_blob[id1] = idx
+        per_search_blob[id2] = idx
+        # It's possible that a id can end up registered to two blobs, 
+        # But as I am going to do 2+ passes, seems not a big problem?
+    
 
 
 for k in blobs:
