@@ -41,11 +41,11 @@ for line in oh:
         # Not in any blob, add a new one:
         blobs[idx] = set([id1, id2]) # key is not important and has no meaning
     '''
-    
+
     if id1 in per_search_blob:
         blobs[per_search_blob[id1]].add(id2)
         per_search_blob[id2] = per_search_blob[id1]
-    elif id2 in per_search_blob:   
+    elif id2 in per_search_blob:
         blobs[per_search_blob[id2]].add(id1)
         per_search_blob[id1] = per_search_blob[id2]
     else:
@@ -53,9 +53,9 @@ for line in oh:
         blobs[idx] = set([id1, id2]) # key is not important and has no meaning
         per_search_blob[id1] = idx
         per_search_blob[id2] = idx
-        # It's possible that a id can end up registered to two blobs, 
+        # It's possible that a id can end up registered to two blobs,
         # But as I am going to do 2+ passes, seems not a big problem?
-    
+
 
 
 for k in blobs:
@@ -70,6 +70,13 @@ fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 # save the ID of the first one in the blob;
 oh = open('simple_filtered.fasta', 'wt')
 for k in blobs:
-    fid = blobs[k].pop()
-    oh.write('>{}\n{}\n'.format(fid, fasta[fid]))
+    # Find the k with the longest sequence
+    longest_so_far = -1 # The fid
+    longest_so_far_len = 0
+    for fid in blobs[k]:
+        if len(fasta[fid]) > longest_so_far_len:
+            longest_so_far_len = len(fasta[fid])
+            longest_so_far = fid
+
+    oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
 oh.close()
