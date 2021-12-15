@@ -58,6 +58,7 @@ fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 
 # save the ID of the first one in the blob;
 oh = open('simple_filtered.fasta', 'wt')
+ids_saved = set([])
 for k in blobs:
     # Find the k with the longest sequence
     longest_so_far = -1 # The fid
@@ -66,6 +67,8 @@ for k in blobs:
         if len(fasta[fid]) > longest_so_far_len:
             longest_so_far_len = len(fasta[fid])
             longest_so_far = fid
+    if longest_so_far not in ids_saved:
+        oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
+        ids_saved.add(longest_so_far)
 
-    oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
 oh.close()

@@ -2,7 +2,7 @@
 # The aim here is to now output blobbed FASTAs for HMM generation.
 # One remaining problem is that there is likely to still be trivial matches remaining in the search.
 
-# TODO: Wouldn't it be better to shrink this to the smallest non-trivial list,
+# TODO: Wouldn't it be better to shrink this to the smallest non-trivial list?
 
 import sys, os, gzip
 from glbase3.utils import convertFASTAtoDict
@@ -61,6 +61,7 @@ fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 
 # save the ID of the first one in the blob;
 oh = open('single_representative_envs.fasta', 'wt')
+ids_saved = set([])
 for k in blobs:
     # Find the k with the longest sequence
     longest_so_far = -1 # The fid
@@ -70,5 +71,8 @@ for k in blobs:
             longest_so_far_len = len(fasta[fid])
             longest_so_far = fid
 
-    oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
+    if longest_so_far not in ids_saved:
+        oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
+        ids_saved.add(longest_so_far)
+
 oh.close()
