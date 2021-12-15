@@ -1,14 +1,13 @@
 
-# The output limit per search is 500 matches, so there is some significant banding
-# and this will need to be done for at least 2 passes:
+# The aim here is to now output blobbed FASTAs for HMM generation.
+# One remaining problem is that there is likely to still be trivial matches remaining in the search.
 
-# The aim here is to remove trivial overlaps, and simplify the full dataset to something more
-# managable
+# TODO: Wouldn't it be better to shrink this to the smallest non-trivial list,
 
 import sys, os, gzip
 from glbase3.utils import convertFASTAtoDict
 
-oh = gzip.open('all_vs_all.results.gz', "rt")
+oh = gzip.open('simple_filtered.results.gz', "rt")
 
 idx = 0
 
@@ -17,14 +16,18 @@ per_search_blob = {}
 
 for line in oh:
     idx += 1
-    if idx % 1e6 == 0:
+    if idx % 1e5 == 0:
         print('Processed {:,}'.format(idx))
         #break
 
     l = line.strip().split(',')
     length = float(l[2]) # percent length matched
 
-    if length < 70: # percent length;
+    #if length < 90: # 90% overlap
+    #    # It's one of the trivial overlaps;
+    #    continue
+
+    if length < 60: # 60% overlap
         continue
 
     id1 = l[0]
@@ -52,12 +55,12 @@ for k in blobs:
 print('Number of blobs: {:,}'.format(len(blobs)))
 
 # get all the fastas:
-fasta = convertFASTAtoDict('1.blastdb/all_envs.fasta')
+fasta = convertFASTAtoDict('simple_filtered.fasta')
 fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 #print(fasta)
 
 # save the ID of the first one in the blob;
-oh = open('simple_filtered.fasta', 'wt')
+oh = open('single_representative_envs.fasta', 'wt')
 for k in blobs:
     # Find the k with the longest sequence
     longest_so_far = -1 # The fid
