@@ -19,7 +19,6 @@ for line in oh:
     idx += 1
     if idx % 1e6 == 0:
         print('Processed {:,}'.format(idx))
-        #break
 
     l = line.strip().split(',')
     length = float(l[2]) # percent length matched
@@ -56,6 +55,24 @@ fasta = convertFASTAtoDict('1.blastdb/all_envs.fasta')
 fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 #print(fasta)
 
+# Make certain all envs appear at least once anywhere in the results.
+# If it's not found, add it as an extra fasta entry to save.
+
+_found = 0
+_not_found = 0
+toadd = []
+for f in fasta:
+    # Is it in anyblob?
+    for k in blobs:
+        if f in blobs[k]:
+            _found += 1
+            break
+    else:
+        _not_found += 1
+        toadd.append(f)
+
+print(f'Number of envs not found: {_not_found} presumed unique')
+
 # save the ID of the first one in the blob;
 oh = open('simple_filtered.fasta', 'wt')
 ids_saved = set([])
@@ -70,5 +87,9 @@ for k in blobs:
     if longest_so_far not in ids_saved:
         oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
         ids_saved.add(longest_so_far)
+
+# And add all ths missing (unique?) envs:
+for f in toadd:
+    oh.write('>{}\n{}\n'.format(f, fasta[f]))
 
 oh.close()
