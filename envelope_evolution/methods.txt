@@ -16,7 +16,7 @@ Clustal each bundle?
 
 Somehow work out how old they might be?
 
-2. Get all ORFs from the Lamprey and B.Lancoleatum genomes > 50 aa in length
+2. Get all possible ORFs from the Lamprey and B.Lancoleatum genomes > 50 aa in length
 
 3. BLAST it with the env database
 

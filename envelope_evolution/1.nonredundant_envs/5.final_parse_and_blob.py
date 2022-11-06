@@ -4,6 +4,9 @@
 
 # TODO: Wouldn't it be better to shrink this to the smallest non-trivial list?
 
+# The assumption here is that every env has a hit.
+# If it has no hits then it wont appear in the simple_filtered file?
+
 import sys, os, gzip
 from glbase3.utils import convertFASTAtoDict
 
@@ -27,7 +30,7 @@ for line in oh:
     #    # It's one of the trivial overlaps;
     #    continue
 
-    if length < 60: # 60% overlap
+    if length < 50: # 60% overlap
         continue
 
     id1 = l[0]
