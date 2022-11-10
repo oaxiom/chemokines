@@ -18,12 +18,13 @@ per_search_blob = {}
 for line in oh:
     idx += 1
     if idx % 1e6 == 0:
-        print('Processed {:,}'.format(idx))
+        print(f'Processed {idx:,} registered {len(blobs)} blobs')
 
     l = line.strip().split(',')
     length = float(l[2]) # percent length matched
 
-    if length < 70: # percent length;
+    if length < 70: # need at least this percent length match to consider it as redundant;
+        # Lower will consider weaker matches, higher will consider stronger matches
         continue
 
     id1 = l[0]

@@ -1,5 +1,5 @@
 
-Build semi non-redundant viral envelope models (HMMS)
+Build semi non-redundant viral envelope database, then search some ancient genomes
 
 1. Download all envelope proteins from >100 aa to 1500 aa
 307926 hits (6/12/2021)

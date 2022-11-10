@@ -30,7 +30,8 @@ for line in oh:
     #    # It's one of the trivial overlaps;
     #    continue
 
-    if length < 50: # 60% overlap
+    if length < 60: # at least x0% of the sequence overlaps;
+        # Higher will bundle more together, lower will split the envs up and produce more candidates;
         continue
 
     id1 = l[0]
@@ -50,8 +51,6 @@ for line in oh:
         blobs[idx] = set([id1, id2]) # key is not important and has no meaning
         per_search_blob[id1] = idx
         per_search_blob[id2] = idx
-        # It's possible that a id can end up registered to two blobs,
-        # But as I am going to do 2+ passes, seems not a big problem?
 
 for k in blobs:
     print('Blob {} members: {}'.format(k, len(blobs[k])))
@@ -61,6 +60,24 @@ print('Number of blobs: {:,}'.format(len(blobs)))
 fasta = convertFASTAtoDict('simple_filtered.fasta')
 fasta = {f['name'].split(' ')[0]: f['seq'] for f in fasta}
 #print(fasta)
+
+# Make certain all envs appear at least once anywhere in the results.
+# If it's not found, add it as an extra fasta entry to save.
+
+_found = 0
+_not_found = 0
+toadd = []
+for f in fasta:
+    # Is it in anyblob?
+    for k in blobs:
+        if f in blobs[k]:
+            _found += 1
+            break
+    else:
+        _not_found += 1
+        toadd.append(f)
+
+print(f'Number of envs not found: {_not_found} presumed unique')
 
 # save the ID of the first one in the blob;
 oh = open('single_representative_envs.fasta', 'wt')
@@ -77,5 +94,9 @@ for k in blobs:
     if longest_so_far not in ids_saved:
         oh.write('>{}\n{}\n'.format(longest_so_far, fasta[longest_so_far]))
         ids_saved.add(longest_so_far)
+
+# And add all ths missing (unique?) envs:
+for f in toadd:
+    oh.write('>{}\n{}\n'.format(f, fasta[f]))
 
 oh.close()
