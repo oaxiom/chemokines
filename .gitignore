@@ -1,3 +1,16 @@
+# Customs
+*.fasta
+*.pdf
+*.gz
+*.phylip
+*.pdb
+*.dnd
+*.phr
+*.pin
+*.psq
+*.ptf
+*.pto
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
