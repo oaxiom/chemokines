@@ -30,9 +30,9 @@ ENV_tas
 https://www.ebi.ac.uk/interpro/
 GP41
 TLV_coat
-PF01004 IPR000069 Env_glycoprot_M_flavivir
-PF03554 IPR005211 Herpes_glycoprotein_N_domain
-PF12175 IPR022004 WSSV_Vp28
+PF01004 IPR000069 Flavi_M
+PF03554 IPR005211 Herpes_UL73
+PF12175 IPR022004 WSS_VP
 PF13804 IPR029104 HERV-K_env
 PF12786 IPR024347 GB_virus_envelope
 PF16329 Pestivirus_E2
