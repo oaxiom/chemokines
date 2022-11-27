@@ -106,14 +106,14 @@ def process(infile, outfile, stub):
     print(f"In total found: {len(orfs):,} ORFs")
     oh = gzip.open(outfile, 'wt')
     for orf in orfs:
-        oh.write(f">{orf[0]}\n{orf[1]}\n")
+        oh.write(f">{orf[0]}\n{orf[1].rstrip('-')}\n")
     oh.close()
     return
 
 if __name__ == '__main__':
     process('test.fa.gz', 'orfs_test.fa.gz', stub='test')
-    process('Branchiostoma_lanceolatum.BraLan2.dna.toplevel.fa.gz', 'orfs_BraLan.fa.gz', stub='BraLan')
-    process('Eptatretus_burgeri.Eburgeri_3.2.dna.toplevel.fa.gz', 'orfs_Eburgeri.fa.gz', stub='Eburgeri')
-    process('Petromyzon_marinus.Pmarinus_7.0.dna.toplevel.fa.gz', 'orfs_Pmarinus.fa.gz', stub='Pmarinus')
-    process('Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz', 'orfs_hg38.fa.gz', stub='hg38')
+    process('../genomes/Branchiostoma_lanceolatum.BraLan2.dna.toplevel.fa.gz', 'orfs_BraLan.fa.gz', stub='BraLan')
+    process('../genomes/Eptatretus_burgeri.Eburgeri_3.2.dna.toplevel.fa.gz', 'orfs_Eburgeri.fa.gz', stub='Eburgeri')
+    process('../genomes/Petromyzon_marinus.Pmarinus_7.0.dna.toplevel.fa.gz', 'orfs_Pmarinus.fa.gz', stub='Pmarinus')
+    process('../genomes/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz', 'orfs_hg38.fa.gz', stub='hg38')
 
