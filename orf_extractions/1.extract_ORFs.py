@@ -70,7 +70,6 @@ def three_frame_translation(seq, id, stub):
     return raw_orfs
 
 # Do all this the dumb way:
-
 def process(infile, outfile, stub):
     print(f"Doing {infile}...")
     oh = gzip.open(infile, 'rt')
